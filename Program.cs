@@ -1,3 +1,4 @@
+﻿using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -7,6 +8,34 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.User.Identity?.Name
+                ?? httpContext.Connection.RemoteIpAddress?.ToString()
+                ?? Guid.NewGuid().ToString()
+                ?? "fixed_key", 
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 10,
+                QueueLimit = 0,
+                Window = TimeSpan.FromMinutes(1),
+            }));
+    options.OnRejected = (context, cancellationToken) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        context.HttpContext.Response.ContentType = Application.Json;
+        context.HttpContext.Response.WriteAsJsonAsync(new
+        {
+            Error = "Too many requests"
+        });
+
+        return ValueTask.CompletedTask;
+    };
+});
 
 var app = builder.Build();
 
@@ -36,6 +65,8 @@ app.UseExceptionHandler(errorApp =>
         }
     });
 });
+
+app.UseRateLimiter();
 
 app.UseSwagger();
 app.UseSwaggerUI();
