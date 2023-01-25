@@ -6,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 app.UseExceptionHandler(errorApp =>
@@ -34,6 +36,9 @@ app.UseExceptionHandler(errorApp =>
         }
     });
 });
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
