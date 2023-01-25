@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,11 +39,6 @@ app.UseExceptionHandler(errorApp =>
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",
