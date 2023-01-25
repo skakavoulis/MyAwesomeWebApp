@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
 namespace MyAwesomeWebApp.Controllers;
@@ -19,6 +19,7 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
+    [EnableRateLimiting("api")]
     [HttpGet(Name = "GetWeatherForecast")]
     public WeatherForecast Get()
     {

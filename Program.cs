@@ -1,4 +1,4 @@
-using System.Threading.RateLimiting;
+﻿using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -11,12 +11,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddRateLimiter(options =>
 {
-    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+    options.AddPolicy("api", httpContext =>
         RateLimitPartition.GetFixedWindowLimiter(
             partitionKey: httpContext.User.Identity?.Name
                 ?? httpContext.Connection.RemoteIpAddress?.ToString()
                 ?? Guid.NewGuid().ToString()
-                ?? "fixed_key", 
+                ?? "fixed_key",
             factory: partition => new FixedWindowRateLimiterOptions
             {
                 AutoReplenishment = true,
