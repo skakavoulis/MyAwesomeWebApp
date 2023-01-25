@@ -5,6 +5,12 @@ using static System.Net.Mime.MediaTypeNames;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHealthChecks();
+
+builder.Services.AddResponseCompression();
+
+builder.Services.AddMemoryCache();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSwaggerGen();
@@ -39,6 +45,8 @@ builder.Services.AddRateLimiter(options =>
 
 var app = builder.Build();
 
+app.UseResponseCompression();
+
 app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
@@ -72,6 +80,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseStaticFiles();
+
+app.UseHealthChecks("/ready");
 
 app.MapControllerRoute(
     name: "default",
