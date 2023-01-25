@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
-namespace ProductionRead_02.Controllers;
+namespace MyAwesomeWebApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]

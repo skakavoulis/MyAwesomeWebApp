@@ -1,4 +1,4 @@
-﻿namespace ProductionRead_02;
+﻿namespace MyAwesomeWebApp;
 
 public class WeatherForecast
 {

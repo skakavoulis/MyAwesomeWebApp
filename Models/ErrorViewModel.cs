@@ -1,4 +1,4 @@
-﻿namespace ProductionRead_02.Models;
+﻿namespace MyAwesomeWebApp.Models;
 
 public class ErrorViewModel
 {

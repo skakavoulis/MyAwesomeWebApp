@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ProductionRead_02.Models;
+using MyAwesomeWebApp.Models;
 
-namespace ProductionRead_02.Controllers;
+namespace MyAwesomeWebApp.Controllers;
 
 public class HomeController : Controller
 {
